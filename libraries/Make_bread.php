@@ -27,19 +27,20 @@ class Make_bread
         }
     }
 
-    public function add($title = NULL, $href = NULL, $segment = FALSE)
+    public function add($title = NULL, $href = '', $segment = FALSE)
     {
         // if the method won't receive the $title parameter, it won't do anything to the $_breadcrumb
         if (is_null($title)) return;
-        // if $segment is not FALSE we will build the URL from the previous crumb
-        if($segment)
-        {
-            $previous = $this->_breadcrumb[sizeof($this->_breadcrumb) - 1]['href'];
-            $href = $previous.'/'.$href;
-        }
-        // else if the $href is not an absolute path we compose the URL from our site's URL
-        elseif(!filter_var($href, FILTER_VALIDATE_URL)){
-            $href = site_url($href);
+        // first let's find out if we have a $href
+        if(isset($href) && strlen($href)>0) {
+            // if $segment is not FALSE we will build the URL from the previous crumb
+            if ($segment) {
+                $previous = $this->_breadcrumb[sizeof($this->_breadcrumb) - 1]['href'];
+                $href = $previous . '/' . $href;
+            } // else if the $href is not an absolute path we compose the URL from our site's URL
+            elseif (!filter_var($href, FILTER_VALIDATE_URL)) {
+                $href = site_url($href);
+            }
         }
         // add crumb to the end of the breadcrumb
         $this->_breadcrumb[] = array('title' => $title, 'href' => $href);
@@ -54,7 +55,16 @@ class Make_bread
             foreach($this->_breadcrumb as $key=>$crumb)
             {
                 // we put the crumb with open and closing tags
-                $output .= $this->_crumb_open.anchor($crumb['href'],$crumb['title']).$this->_crumb_close;
+                $output .= $this->_crumb_open;
+                if(strlen($crumb['href'])>0)
+                {
+                    $output .= anchor($crumb['href'],$crumb['title']);
+                }
+                else
+                {
+                    $output .= $crumb['title'];
+                }
+                $output .= $this->_crumb_close;
                 // we end the crumb with the divider if is not the last crumb
                 if($key < (sizeof($this->_breadcrumb)-1))
                 {
