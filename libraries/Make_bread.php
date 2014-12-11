@@ -32,13 +32,16 @@ class Make_bread
         // if the method won't receive the $title parameter, it won't do anything to the $_breadcrumb
         if (is_null($title)) return;
         // first let's find out if we have a $href
-        if(isset($href) && strlen($href)>0) {
+        if(isset($href) && strlen($href)>0)
+        {
             // if $segment is not FALSE we will build the URL from the previous crumb
-            if ($segment) {
+            if ($segment)
+            {
                 $previous = $this->_breadcrumb[sizeof($this->_breadcrumb) - 1]['href'];
                 $href = $previous . '/' . $href;
             } // else if the $href is not an absolute path we compose the URL from our site's URL
-            elseif (!filter_var($href, FILTER_VALIDATE_URL)) {
+            elseif (!filter_var($href, FILTER_VALIDATE_URL))
+            {
                 $href = site_url($href);
             }
         }
