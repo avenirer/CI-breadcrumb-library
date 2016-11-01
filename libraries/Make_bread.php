@@ -21,7 +21,7 @@ class Make_bread
         $this->_divider = $CI->config->item('divider', 'make_bread');
         $this->_crumb_open = $CI->config->item('crumb_open', 'make_bread');
         $this->_crumb_close = $CI->config->item('crumb_close', 'make_bread');
-        if(isset($this->_include_home) && (sizeof($this->_include_home) > 0))
+        if(isset($this->_include_home) && (!empty($this->_include_home)))
         {
             $this->_breadcrumb[] = array('title'=>$this->_include_home, 'href'=>rtrim(base_url(),'/'));
         }
